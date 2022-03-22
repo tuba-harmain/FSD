@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://tuba_harmain:Geduld@socialapp.pvxnb.mongodb.net/SocialApp?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://tuba_harmain:Geduld@socialapp.pvxnb.mongodb.net/SocialApp?retryWrites=true&w=majority",
+    "jwttoken": "secrettoken"
 }

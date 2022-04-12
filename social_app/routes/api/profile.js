@@ -5,8 +5,13 @@ const { body, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const { route } = require('express/lib/application');
 
-router.get('/me', auth, async(req, res) => {
+// @route POST api/profile/me
+// @desc Get Current users profile
+// @access Private
+
+router.get('/me', auth, async (req, res) => {
     try {
         const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
 
@@ -105,7 +110,146 @@ router.post('/',
             res.status(500).send('Server Error!');
         }
 
-}
-);
+    }
+    );
+
+// @route GET api/profile
+// @desc Get all profiles
+// @access Public
+
+router.get('/', async (req, res) => {
+    try {
+        const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+        res.json(profiles);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route GET api/profile/user/:user_id
+// @desc Get profile bu user ID
+// @access Public
+
+router.get('/user/:user_id', async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.params.user_id}).populate('user', ['name', 'avatar']);
+
+        if(!profile) 
+            return res.status(400).json({ msg: 'There is no profile for this user' });
+    
+         res.json(profile);   
+    } catch (err) {
+        console.error(err.message);
+        if(err.kind == 'ObjectId') {
+            return res.status(400).json({ msg: 'Profile not found!' }); 
+        }
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route DELETE api/profile
+// @desc Delete profile, user & posts
+// @access Private
+
+router.delete('/', auth, async (req, res) => {
+    try {
+        //Remove profile
+        await Profile.findOneAndRemove({ user: req.user.id });
+        // Remove user
+        await Profile.findOneAndRemove({ _id: req.user .id });
+    
+         res.json({ msg: 'User deleted' });   
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route PUT api/profile/experience
+// @desc  Add profile experience
+// @access Private
+
+router.put(
+    '/experience', [ auth, [ 
+body('title', 'Title is required')
+    .not()
+    .isEmpty(),
+body('company', 'Company is required')
+    .not()
+    .isEmpty(),
+body('from', 'From date is required')
+    .not()
+    .isEmpty(),
+    ] 
+],
+    async (req, res) => {
+       const errors = validationResult(req);
+       if(!errors.isEmpty()) 
+       {
+            return res.status(400).json({ errors: errors.array() }); 
+       }
+
+       const {
+           title,
+           company,
+           location,
+           from,
+           to,
+           current,
+           description
+       } = req.body;
+
+       const newExp ={
+           title,
+           company,
+           location,
+           from,
+           to,
+           current,
+           description
+       }
+
+       try {
+            const profile = await Profile.findOne({ user: req.user.id });
+
+            profile.experience.unshift(newExp);
+
+            await profile.save();
+
+            res.json(profile);
+
+       } catch (err) {
+           console.error(err.message);
+           res.status(500).send('Server Error');
+       }
+});
+
+// @route DELETE api/profile/experience/:exp_id
+// @desc  Delete profile experience
+// @access Private
+
+router.delete('/experience/:exp_id' , auth, async(req, res) => {
+    try{
+        const profile = await Profile.findOne({ user: req.user.id });
+
+        //Get remove index
+        const removeIndex = profile.experience
+        .map(item => item.id)
+        .indexOf(req.params.exp_id);
+
+        profile.experience.splice(removeIndex, 1);
+
+        await profile.save();
+
+        res.json(profile);
+    }   catch (err){
+        console.erroe(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+
 
 module.exports = router;

@@ -9,11 +9,11 @@ const { body, validationResult } = require('express-validator');
 const User = require('../../models/User');
 
 router.get('/', auth, async (req, res) => {
-    try{
+    try {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
-    }catch(err){
-        console.erroe(err.message);
+    } catch(err) {
+        console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
@@ -28,25 +28,25 @@ router.post('/',
 ], 
 async (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
     const { email, password} = req.body;
 
-    try{
+    try {
         // See if User exists
         let user = await User.findOne({email});
 
-        if(!user) {
-            return res.status(400).json([{ msg : "Invalid Credentials!" }]);
+        if (!user) {
+            return res.status(400).json({ msg : "Invalid Credentials!" });
         }
 
         // Checking Password
         const isMatch = await bcrypt.compare(password, user.password);
 
-        if (!isMatch){
-            return res.status(400).json([{ msg : "Invalid Credentials!" }]);
+        if (!isMatch) {
+            return res.status(400).json({ msg : "Invalid Credentials!" });
         }
 
         // Return jsonwebtoken

@@ -1,4 +1,4 @@
 # GET API
 
-Building an API from Scratch with Node.js Express
+Building an API from Scratch with MERN
 

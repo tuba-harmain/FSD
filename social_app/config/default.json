@@ -1,4 +1,7 @@
 {
     "mongoURI": "mongodb+srv://tuba_harmain:Geduld@socialapp.pvxnb.mongodb.net/SocialApp?retryWrites=true&w=majority",
-    "jwttoken": "secrettoken"
+    "jwttoken": "secrettoken",
+    "githubClientId":"7aff9f26479c688b3134",
+    "githubSecret":"c2a8f04926a7a02f747ccfa8aa0c006fc23a85ee",
+    "githubToken": "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"
 }

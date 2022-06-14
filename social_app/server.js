@@ -24,3 +24,14 @@ const PORT  = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
+process.on('SIGINT', function() {
+    console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+    // some other closing procedures go here
+    process.exit(0);
+  });
+
+  process.on('SIGTERM', function() {
+    console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+    // some other closing procedures go here
+    process.exit(0);
+  });

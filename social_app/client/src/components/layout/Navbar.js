@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 import { Fragment } from 'react';
 
-const Navbar = (  {auth: {isAuthenticated, loading}, logout } ) => {
+const Navbar = (  {auth: { isAuthenticated }, logout } ) => {
     const authLinks = (
       <ul>
         <li>
@@ -38,12 +38,12 @@ const Navbar = (  {auth: {isAuthenticated, loading}, logout } ) => {
 
   return (
     <nav className="navbar bg-dark">
+      <h1>
         <Link to = '/'>
           <i className='fas fa-code' /> Social
         </Link>
-        <h1>
-          { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
         </h1>
+         <Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>
     </nav>
   )
 };

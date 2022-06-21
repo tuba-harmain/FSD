@@ -18,8 +18,9 @@ const Dashboard = ({ getCurrentProfile, deleteAccount, auth: { user }, profile: 
   <section className="container">
    <h1 className='large text-primary'> Dashboard</h1>
    <p className='lead'>
-     <i className='fas fa-user'></i> Welcome {user && user.name } </p>
-     { profile != null ? (
+     <i className='fas fa-user' /> Welcome {user && user.name } 
+     </p>
+     { profile !== null ? (
        <>
        <DasboardActions />
        <Experience experience={profile.experience} />

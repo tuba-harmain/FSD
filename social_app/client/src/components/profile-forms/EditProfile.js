@@ -71,7 +71,6 @@ const EditProfile = ({ profile: { profile, loading }, createProfile, getCurrentP
 
      const onSubmit = e => {
          e.preventDefault();
-         console.log("navigate", navigate);
          createProfile(formData, navigate, true);
      }
 

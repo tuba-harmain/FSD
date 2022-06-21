@@ -9,7 +9,6 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-
   },
   "author": "Tuba Harmain",
   "license": "ISC",
@@ -17,11 +16,14 @@
     "axios": "^0.27.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.7",
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "gravatar": "^1.8.2",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.7",
+    "nodemailer": "^6.7.5",
     "request": "^2.88.2"
   },
   "devDependencies": {

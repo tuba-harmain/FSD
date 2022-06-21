@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { body, validationResult } = require('express-validator');
 
-const User = require('../../models/User');
+const { User } = require('../../models/User');
 
 router.post('/',[
     body('name', 'Name is required')

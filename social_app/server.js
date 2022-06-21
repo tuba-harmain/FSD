@@ -1,14 +1,23 @@
+require("dotenv").config();
+const passwordReset = require("./routes/api/PasswordReset");
+const users = require("./routes/api/users");
+const connection = require("./config/db");
 const express = require('express');
 const connectDB = require('./config/db');
 const path = require('path');
 
 const app = express();
 
+connection();
+
 //Connect Database
 connectDB();
 
 //Init Middleware
 app.use(express.json({ extended: false }));
+
+app.use("/api/users", users);
+app.use("/api/password-reset", passwordReset);
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));

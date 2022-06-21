@@ -22,6 +22,7 @@ router.get('/me', auth, async (req, res) => {
         if(!profile) {
             return res.status(400).json({ msg: "There is no profile for this user"});
         }
+        res.json(profile);
     }catch(err) {
         console.error(err.message);
         res.status(500).send('Server Error!');
@@ -132,7 +133,7 @@ router.get('/', async (req, res) => {
 });
 
 // @route GET api/profile/user/:user_id
-// @desc Get profile bu user ID
+// @desc Get profile by user ID
 // @access Public
 
 router.get('/user/:user_id', async (req, res) => {

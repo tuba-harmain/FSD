@@ -6,7 +6,11 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { body, validationResult } = require('express-validator');
 
-const { User } = require('../../models/User');
+const { User }  = require('../../models/User');
+
+// @route POST  api/users
+// @desc Register user
+// @access Public
 
 router.post('/',[
     body('name', 'Name is required')
@@ -32,15 +36,18 @@ async (req, res) => {
         let user = await User.findOne({email});
 
         if(user) {
-            return res.status(400).json([{ msg : "User already exists!" }]);
+            return res.status(400).json({ errors: [{ msg : "User already exists!" }] });
         }
 
         // Get Users Gravator
-        const avatar = gravatar.url(email, {
-            s: '200',
-            r: 'pg',
-            d: 'mm'
-        })
+        const avatar = normalize(
+            gravatar.url(email, {
+              s: '200',
+              r: 'pg',
+              d: 'mm'
+            }),
+            { forceHttps: true }
+          );
 
         user = new User ({
             name,
@@ -74,7 +81,7 @@ async (req, res) => {
 
     } catch(err) { 
         console.error(err.message);
-        res.status(500).send('Serve Error')
+        res.status(500).send('Server Error')
     }
 
 });
